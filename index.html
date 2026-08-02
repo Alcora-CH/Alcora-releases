@@ -57,9 +57,14 @@
     color:var(--soft);font-size:11.5px;padding:2px 9px;cursor:pointer}
   .ruban button:hover{color:var(--ink)}
 
-  .alcapp{min-width:940px;height:600px;display:flex;background:var(--bg);
+  .alcapp{min-width:940px;height:648px;display:flex;background:var(--bg);
           border-radius:10px;overflow:hidden;border:1px solid var(--line);
           position:relative;outline:none;font-size:13px}
+  /* Les barres de defilement INTERNES restent discretes, comme dans l'application. */
+  .alcapp *{scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
+  .alcapp *::-webkit-scrollbar{width:6px;height:6px}
+  .alcapp *::-webkit-scrollbar-thumb{background:var(--line2);border-radius:99px}
+  .alcapp *::-webkit-scrollbar-track{background:transparent}
 
   /* rail */
   .rail{width:52px;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
@@ -77,9 +82,9 @@
   .panneau{width:240px;flex:0 0 auto;border-right:1px solid var(--line);
            background:var(--card);padding:12px 12px 16px;overflow-y:auto}
   .panneau h4{font-size:10px;text-transform:uppercase;letter-spacing:.08em;
-              color:var(--soft);margin:14px 0 7px;font-weight:650}
+              color:var(--soft);margin:10px 0 5px;font-weight:650}
   .panneau h4:first-child{margin-top:0}
-  .ligne{display:flex;align-items:baseline;gap:8px;padding:2px 0;font-size:12px}
+  .ligne{display:flex;align-items:baseline;gap:8px;padding:1px 0;font-size:12px}
   .ligne .k{color:var(--muted)}
   .ligne .v{margin-left:auto;font-family:Consolas,monospace;font-size:11.5px}
   .cam-ligne{display:flex;align-items:center;gap:8px;padding:4px 2px;border-radius:6px}
@@ -102,11 +107,11 @@
   .vive .quoi small{display:block;font-family:Consolas,monospace;font-size:9.5px;color:var(--soft)}
   .vive .quand{font-family:Consolas,monospace;font-size:10px;color:var(--soft)}
 
-  .histo{display:flex;align-items:flex-end;gap:2px;height:34px;margin-top:4px}
+  .histo{display:flex;align-items:flex-end;gap:2px;height:26px;margin-top:3px}
   .histo i{flex:1;background:var(--accent);opacity:.75;border-radius:1px 1px 0 0;min-height:2px}
   .jauge{height:5px;border-radius:99px;background:var(--card2);overflow:hidden;margin:6px 0 3px}
   .jauge i{display:block;height:100%;width:96%;background:linear-gradient(90deg,var(--accent),var(--accent-d))}
-  .pied-panneau{margin-top:14px;font-size:10.5px;color:var(--ok)}
+  .pied-panneau{margin-top:8px;font-size:10.5px;color:var(--ok)}
 
   /* scene */
   .scene{flex:1;position:relative;background:#101216;min-width:0;display:flex;flex-direction:column}
@@ -114,12 +119,11 @@
   .espace-vue.actif{display:flex}
 
   /* tuiles du direct */
-  /* Les rangées prennent TOUTE la hauteur (minmax(0,1fr)) : sans cela, une tuile en
-     colonne flexible n'a pas de hauteur propre, son image s'effondre à zéro, et il ne
-     reste que les bandeaux — constaté à la première capture d'écran. */
-  .mosaique{flex:1;display:grid;grid-template-columns:1fr;grid-auto-rows:minmax(0,1fr);
-            gap:8px;padding:8px;min-height:0}
-  .mosaique.deux{grid-template-columns:1fr 1fr}
+  /* Les DIMENSIONS des tuiles sont calculées en JS, comme dans la vraie application :
+     une vidéo est en 16:9, et une grille CSS qui étire donnait des flux écrasés en
+     portrait. La grille ne fait ici que centrer ce que le calcul a dimensionné. */
+  .mosaique{flex:1;display:grid;gap:8px;padding:8px;min-height:0;
+            justify-content:center;align-content:center}
   .tuile{display:flex;flex-direction:column;border-radius:8px;overflow:hidden;
          border:1px solid var(--line);background:var(--card);min-height:0}
   .bandeau{height:30px;display:flex;align-items:center;gap:6px;padding:0 8px;flex:0 0 auto}
@@ -677,11 +681,36 @@ function tuileHtml(c){
   </div>`;
 }
 
+/*
+ * La grille du vrai Alcora, en miniature : chaque tuile est DIMENSIONNEE pour que son
+ * image reste en 16:9 — bandeau compris — et la grille ne fait que centrer le resultat.
+ * Une grille CSS qui etire donnait des flux ecrases en portrait, ce qui ne ressemble a
+ * aucune camera du monde.
+ */
+const BANDEAU = 30, MARGE = 8;
+function dimensionnerMosaique(){
+  const m=$('#mosaique'); if(!m) return;
+  const n=m.children.length; if(!n) return;
+  const W=m.clientWidth-2*MARGE, H=m.clientHeight-2*MARGE;
+  let meilleur=null;
+  for(let cols=1; cols<=n; cols++){
+    const lignes=Math.ceil(n/cols);
+    let tw=(W-(cols-1)*MARGE)/cols;
+    let th=tw*9/16+BANDEAU;
+    const hTotale=lignes*th+(lignes-1)*MARGE;
+    if(hTotale>H){ th=(H-(lignes-1)*MARGE)/lignes; tw=(th-BANDEAU)*16/9; }
+    if(!meilleur || tw*th>meilleur.tw*meilleur.th) meilleur={cols,tw,th};
+  }
+  m.style.gridTemplateColumns=`repeat(${meilleur.cols}, ${Math.floor(meilleur.tw)}px)`;
+  m.style.gridAutoRows=`${Math.floor(meilleur.th)}px`;
+}
+window.addEventListener('resize', dimensionnerMosaique);
+
 function rendreMosaique(){
   const visibles = CAMS.filter(c=>!masquees.has(c.id) && (!isolee || isolee===c.id));
   const m=$('#mosaique');
-  m.className='mosaique'+(visibles.length>1?' deux':'');
   m.innerHTML=visibles.map(tuileHtml).join('');
+  dimensionnerMosaique();
   visibles.forEach(c=>{
     const e = etatTuiles[c.id] ??= { zoom:1, px:.5, py:.5, sonActif:false };
     brancherImage(c, e, $(`.image[data-cam="${c.id}"]`));
@@ -769,7 +798,7 @@ function basculerOeil(id){
 const vives=[];
 function pousserVive(evt, quand){
   vives.unshift({...evt, quand});
-  if (vives.length>4) vives.pop();
+  if (vives.length>3) vives.pop();
   $('#liste-vives').innerHTML = vives.map(v=>`
     <button class="vive" onclick="demoRelecture('${v.cam.id}')">
       <span class="mini" style="background-image:url('${v.cam.img}');background-position:${v.pos}% 40%"></span>
@@ -837,8 +866,11 @@ function rendreRelecture(){
   const cam=CAMS.find(c=>c.id===relCam);
   const flux=$('#rel-flux');
   flux.style.backgroundImage=`url('${cam.img}')`;
-  flux.style.backgroundPosition=`${30+((relMin*7)%40)}% ${35+((relMin*3)%25)}%`;
-  flux.style.backgroundSize='cover';
+  // Un lecteur video LETTERBOXE : l'image entiere, bandes noires autour — jamais un
+  // recadrage qui ecrase. C'est ce que fait le vrai lecteur (object-fit: contain).
+  flux.style.backgroundPosition='center';
+  flux.style.backgroundSize='contain';
+  flux.style.backgroundRepeat='no-repeat';
   $('#rel-horodatage').textContent=`Aujourd'hui  ${hm(relMin)}:${String(relMin%60*0+((relMin*13)%60)).padStart(2,'0')}`;
   $('#rel-heure-titre').textContent=hm(relMin);
   $('#tete').style.left=(relMin/1440*100)+'%';
