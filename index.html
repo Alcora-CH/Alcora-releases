@@ -3,8 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Alcora — vos caméras UniFi Protect, sans le nuage</title>
-<meta name="description" content="Client Windows pour UniFi Protect : direct, relecture, détections, alertes — entièrement local, sans compte ni télémétrie. Essayez la démo interactive. Open source (GPL-3.0).">
+<title>Alcora — client Windows local pour UniFi Protect</title>
+<meta name="description" content="Alcora est un client Windows natif pour UniFi Protect. Direct, relecture, détections, alertes — sur votre réseau local, sans nuage, sans compte, sans navigateur. Open source, GPL-3.0.">
+<link rel="canonical" href="https://alcora.ch/">
+<meta name="theme-color" content="#1b1e23">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/marque-512.png">
+<link rel="apple-touch-icon" href="assets/marque-512.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Alcora">
+<meta property="og:title" content="Alcora — client Windows local pour UniFi Protect">
+<meta property="og:description" content="Direct, relecture, détections, alertes — sur votre réseau local, sans nuage ni compte. Open source (GPL-3.0).">
+<meta property="og:url" content="https://alcora.ch/">
+<meta property="og:image" content="https://alcora.ch/assets/marque-512.png">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Alcora",
+  "operatingSystem": "Windows 10, Windows 11",
+  "applicationCategory": "SecurityApplication",
+  "description": "Client Windows natif pour UniFi Protect : direct, relecture, détections et alertes, entièrement sur le réseau local, sans nuage.",
+  "url": "https://alcora.ch/",
+  "downloadUrl": "https://github.com/alcora-ch/Alcora-releases/releases/latest/download/Alcora-win-Setup.exe",
+  "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CHF" }
+}
+</script>
 <style>
   :root{
     --bg:#1b1e23; --card:#23272e; --card2:#2a2f37; --line:#353b44; --line2:#434a55;
@@ -12,79 +38,93 @@
     --accent:#d2a263; --accent-soft:#322a1d; --accent-d:#e6b877;
     --ok:#8fae5a; --info:#78a6e0; --bad:#d8685a;
     --on-1:#f2f2f0; --on-2:#d6d6d4; --on-3:#a8a8a6; --on-veil:rgba(16,16,16,.72);
-    /* Effet verre — les valeurs du theme de l'application, transposees telles quelles. */
+    /* Effet verre — les valeurs du thème de l'application, transposées telles quelles. */
     --verre-fond:rgba(255,255,255,.10); --verre-bord:rgba(255,255,255,.16);
     --verre-flou:blur(14px) saturate(140%);
-    --carte-verre:rgba(35,39,46,.62);
+    --carte-verre:rgba(30,34,41,.42);
   }
   *{box-sizing:border-box;margin:0}
   html{scroll-behavior:smooth}
-  body{background:
-         radial-gradient(1100px 500px at 85% -5%, rgba(210,162,99,.05), transparent 60%),
-         radial-gradient(900px 600px at 8% 12%, rgba(120,166,224,.035), transparent 55%),
-         linear-gradient(180deg,#14171c 0%, #191c22 34%, var(--bg) 100%);
-       background-attachment:fixed;
-       color:var(--ink);
+  body{color:var(--ink);
        font:16px/1.65 "Segoe UI",system-ui,-apple-system,sans-serif;
-       -webkit-font-smoothing:antialiased;position:relative;min-height:100vh}
+       -webkit-font-smoothing:antialiased;position:relative;min-height:100vh;
+       background:
+         radial-gradient(1200px 620px at 82% -6%, rgba(210,162,99,.10), transparent 62%),
+         radial-gradient(1000px 700px at 4% 18%, rgba(120,166,224,.06), transparent 58%),
+         radial-gradient(900px 600px at 70% 105%, rgba(210,162,99,.055), transparent 60%),
+         linear-gradient(180deg,#14171c 0%, #191d23 40%, var(--bg) 100%);
+       background-attachment:fixed}
+  /* La poussière d'étoiles — un motif fixe, sans script ni requête. */
   body::before{content:"";position:fixed;inset:0;z-index:-2;opacity:.5;
     background-image:url('data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22700%22 height=%22700%22%3E%3Cg fill=%22%23dad5cb%22%3E%3Ccircle cx=%2237%22 cy=%2261%22 r=%22.9%22 opacity=%22.5%22/%3E%3Ccircle cx=%22131%22 cy=%22142%22 r=%22.6%22 opacity=%22.3%22/%3E%3Ccircle cx=%22243%22 cy=%2244%22 r=%22.8%22 opacity=%22.45%22/%3E%3Ccircle cx=%22355%22 cy=%22190%22 r=%22.5%22 opacity=%22.3%22/%3E%3Ccircle cx=%22468%22 cy=%2288%22 r=%22.9%22 opacity=%22.5%22/%3E%3Ccircle cx=%22598%22 cy=%22161%22 r=%22.6%22 opacity=%22.35%22/%3E%3Ccircle cx=%2286%22 cy=%22287%22 r=%22.7%22 opacity=%22.4%22/%3E%3Ccircle cx=%22214%22 cy=%22341%22 r=%22.5%22 opacity=%22.28%22/%3E%3Ccircle cx=%22333%22 cy=%22279%22 r=%22.9%22 opacity=%22.5%22/%3E%3Ccircle cx=%22471%22 cy=%22344%22 r=%22.6%22 opacity=%22.32%22/%3E%3Ccircle cx=%22611%22 cy=%22293%22 r=%22.8%22 opacity=%22.42%22/%3E%3Ccircle cx=%2251%22 cy=%22468%22 r=%22.6%22 opacity=%22.3%22/%3E%3Ccircle cx=%22183%22 cy=%22512%22 r=%22.8%22 opacity=%22.45%22/%3E%3Ccircle cx=%22317%22 cy=%22447%22 r=%22.5%22 opacity=%22.3%22/%3E%3Ccircle cx=%22452%22 cy=%22516%22 r=%22.9%22 opacity=%22.5%22/%3E%3Ccircle cx=%22585%22 cy=%22461%22 r=%22.6%22 opacity=%22.3%22/%3E%3Ccircle cx=%22119%22 cy=%22617%22 r=%22.7%22 opacity=%22.4%22/%3E%3Ccircle cx=%22262%22 cy=%22655%22 r=%22.5%22 opacity=%22.28%22/%3E%3Ccircle cx=%22399%22 cy=%22601%22 r=%22.8%22 opacity=%22.42%22/%3E%3Ccircle cx=%22540%22 cy=%22648%22 r=%22.6%22 opacity=%22.33%22/%3E%3C/g%3E%3C/svg%3E')}
-  body::after{content:"";position:fixed;top:40px;right:3vw;width:420px;height:280px;
-    z-index:-1;opacity:.08;pointer-events:none;
+  /* La Grande Ourse en filigrane — Mizar et Alcor en or : la marque, à sa place au ciel. */
+  body::after{content:"";position:fixed;top:52px;right:3vw;width:430px;height:290px;
+    z-index:-1;opacity:.10;pointer-events:none;
     background:url('data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 260%22%3E%3Cg stroke=%22%23dad5cb%22 stroke-width=%221%22 fill=%22none%22%3E%3Cpath d=%22M40 40 95 70 150 88 200 95 295 95 300 170 215 160 200 95%22/%3E%3C/g%3E%3Cg fill=%22%23dad5cb%22%3E%3Ccircle cx=%2240%22 cy=%2240%22 r=%223%22/%3E%3Ccircle cx=%22150%22 cy=%2288%22 r=%223%22/%3E%3Ccircle cx=%22200%22 cy=%2295%22 r=%222.6%22/%3E%3Ccircle cx=%22295%22 cy=%2295%22 r=%223.2%22/%3E%3Ccircle cx=%22300%22 cy=%22170%22 r=%222.8%22/%3E%3Ccircle cx=%22215%22 cy=%22160%22 r=%222.8%22/%3E%3C/g%3E%3Cg fill=%22%23d2a263%22%3E%3Ccircle cx=%2295%22 cy=%2270%22 r=%223.6%22/%3E%3Ccircle cx=%22104%22 cy=%2261%22 r=%222%22/%3E%3C/g%3E%3C/svg%3E') no-repeat center/contain}
   @media (max-width:900px){ body::after{display:none} }
+
   .page{max-width:1480px;margin:0 auto;padding:0 clamp(20px,3.5vw,56px) 90px}
   a{color:var(--accent-d);text-decoration:none}
   a:hover{text-decoration:underline}
   html[lang="fr"] .en{display:none !important}
   html[lang="en"] .fr{display:none !important}
 
-  header.site{display:flex;align-items:center;gap:14px;padding:26px 0 0}
-  .marque{width:44px;height:44px;flex:0 0 auto}
-  .nom{font-size:20px;font-weight:650;letter-spacing:-.01em}
+  /* ------------------------------------------------- la barre, qui suit ---- */
+  header.site{position:sticky;top:0;z-index:60;margin:0 calc(-1*clamp(20px,3.5vw,56px));
+    padding:10px clamp(20px,3.5vw,56px);display:flex;align-items:center;gap:13px;
+    background:rgba(20,23,28,.55);border-bottom:1px solid var(--verre-bord);
+    -webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou)}
+  .marque{width:38px;height:38px;flex:0 0 auto;color:var(--accent)}
+  .nom{font-size:19px;font-weight:650;letter-spacing:-.01em}
   .lang{margin-left:auto;display:flex;gap:4px}
-  .lang button{background:none;border:1px solid var(--line);color:var(--soft);
-    border-radius:7px;padding:3px 10px;font-size:12.5px;cursor:pointer}
+  .lang button{background:var(--verre-fond);border:1px solid var(--verre-bord);color:var(--soft);
+    border-radius:7px;padding:3px 10px;font-size:12.5px;cursor:pointer;
+    -webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou)}
   .lang button[aria-pressed="true"]{color:var(--accent-d);border-color:var(--accent)}
+  @media (prefers-reduced-motion:reduce){ .marque *{animation:none !important} }
 
-  .hero{padding:60px 0 34px;text-align:center}
-  h1{font-size:clamp(30px,4.6vw,56px);font-weight:650;letter-spacing:-.02em;line-height:1.12}
+  .hero{padding:74px 0 36px;text-align:center}
+  h1{font-size:clamp(30px,4.4vw,54px);font-weight:650;letter-spacing:-.02em;line-height:1.12}
   h1 em{font-style:normal;color:var(--accent-d)}
-  .sous{color:var(--muted);max-width:62ch;margin:18px auto 0;font-size:clamp(16px,1.35vw,19px)}
-  .boutons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+  .sous{color:var(--muted);max-width:64ch;margin:18px auto 0;font-size:clamp(16px,1.3vw,18.5px)}
+  .boutons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px}
   .btn{display:inline-block;border-radius:10px;padding:12px 26px;font-weight:600;font-size:15px;cursor:pointer;border:0}
   .btn-or{background:var(--accent);color:#1b1e23}
   .btn-or:hover{background:var(--accent-d);text-decoration:none}
-  .btn-ligne{border:1px solid var(--verre-bord);color:var(--ink);background:var(--verre-fond);-webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou)}
+  .btn-ligne{border:1px solid var(--verre-bord);color:var(--ink);background:var(--verre-fond);
+    -webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou)}
   .btn-ligne:hover{border-color:var(--accent);text-decoration:none}
   .note-dl{margin-top:12px;font-size:12.5px;color:var(--soft)}
 
-  h2.sec{font-size:clamp(22px,2.2vw,30px);font-weight:650;letter-spacing:-.01em;margin:84px 0 8px;text-align:center}
-  p.sec{color:var(--muted);text-align:center;max-width:70ch;margin:0 auto 26px;font-size:clamp(14.5px,1.15vw,16.5px)}
+  h2.sec{font-size:clamp(21px,2vw,28px);font-weight:650;letter-spacing:-.01em;margin:84px 0 8px;text-align:center}
+  p.sec{color:var(--muted);text-align:center;max-width:72ch;margin:0 auto 26px;font-size:clamp(14.5px,1.1vw,16px)}
 
-  /* ====================================================== LA DÉMO ============ */
-  .demo-cadre{border:1px solid var(--verre-bord);border-radius:16px;padding:10px;background:rgba(20,23,27,.55);-webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou)}
+  /* ------------------------------------------------------------ la démo ---- */
+  .demo-cadre{border:1px solid var(--verre-bord);border-radius:16px;padding:10px;
+    background:rgba(20,23,27,.42);-webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou)}
   .demo-scroll{overflow-x:auto}
   .ruban{display:flex;justify-content:space-between;align-items:center;gap:10px;
          padding:6px 10px 12px;font-size:12px;color:var(--soft)}
   .ruban b{color:var(--accent-d);font-weight:600}
-  .ruban button{background:none;border:1px solid var(--line);border-radius:6px;
+  .ruban button{background:var(--verre-fond);border:1px solid var(--verre-bord);border-radius:6px;
     color:var(--soft);font-size:11.5px;padding:2px 9px;cursor:pointer}
   .ruban button:hover{color:var(--ink)}
 
-  .alcapp{min-width:940px;height:clamp(648px,72vh,820px);display:flex;background:var(--bg);
-          border-radius:10px;overflow:hidden;border:1px solid var(--line);
+  /* Le corps de l'application laisse filtrer la lumière du fond : c'est là que le
+     verre se sent — la même direction que prendra l'application elle-même. */
+  .alcapp{min-width:940px;height:clamp(648px,72vh,820px);display:flex;
+          background:rgba(24,27,33,.66);
+          -webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou);
+          border-radius:10px;overflow:hidden;border:1px solid var(--verre-bord);
           position:relative;outline:none;font-size:13px}
-  /* Les barres de defilement INTERNES restent discretes, comme dans l'application. */
   .alcapp *{scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
   .alcapp *::-webkit-scrollbar{width:6px;height:6px}
   .alcapp *::-webkit-scrollbar-thumb{background:var(--line2);border-radius:99px}
   .alcapp *::-webkit-scrollbar-track{background:transparent}
 
-  /* rail */
   .rail{width:52px;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
-        gap:6px;padding:10px 0;border-right:1px solid var(--line);background:var(--card)}
-  .rail .logo{width:30px;height:30px;margin-bottom:8px}
+        gap:6px;padding:10px 0;border-right:1px solid var(--verre-bord);background:rgba(35,39,46,.5)}
+  .rail .logo{width:30px;height:30px;margin-bottom:8px;color:var(--accent)}
   .rail button{width:38px;height:38px;display:grid;place-items:center;border-radius:8px;
     background:none;border:0;color:var(--soft);cursor:pointer}
   .rail button:hover{color:var(--ink)}
@@ -93,9 +133,8 @@
   .rail svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.9;
             stroke-linecap:round;stroke-linejoin:round}
 
-  /* panneau */
-  .panneau{width:240px;flex:0 0 auto;border-right:1px solid var(--line);
-           background:var(--card);padding:12px 12px 16px;overflow-y:auto}
+  .panneau{width:240px;flex:0 0 auto;border-right:1px solid var(--verre-bord);
+           background:rgba(35,39,46,.5);padding:12px 12px 16px;overflow-y:auto}
   .panneau h4{font-size:10px;text-transform:uppercase;letter-spacing:.08em;
               color:var(--soft);margin:10px 0 5px;font-weight:650}
   .panneau h4:first-child{margin-top:0}
@@ -128,15 +167,12 @@
   .jauge i{display:block;height:100%;width:96%;background:linear-gradient(90deg,var(--accent),var(--accent-d))}
   .pied-panneau{margin-top:8px;font-size:10.5px;color:var(--ok)}
 
-  /* scene */
-  .scene{flex:1;position:relative;background:#101216;min-width:0;display:flex;flex-direction:column}
+  .scene{flex:1;position:relative;min-width:0;display:flex;flex-direction:column;
+         background:radial-gradient(700px 380px at 70% 0%, rgba(210,162,99,.05), transparent 60%),
+                    rgba(13,15,19,.5)}
   .espace-vue{position:absolute;inset:0;display:none;flex-direction:column}
   .espace-vue.actif{display:flex}
 
-  /* tuiles du direct */
-  /* Les DIMENSIONS des tuiles sont calculées en JS, comme dans la vraie application :
-     une vidéo est en 16:9, et une grille CSS qui étire donnait des flux écrasés en
-     portrait. La grille ne fait ici que centrer ce que le calcul a dimensionné. */
   .mosaique{flex:1;display:grid;gap:8px;padding:8px;min-height:0;
             justify-content:center;align-content:center}
   .tuile{display:flex;flex-direction:column;border-radius:8px;overflow:hidden;
@@ -169,12 +205,12 @@
   .flash.declenche{animation:flashK .5s ease-out}
   @keyframes flashK{0%{opacity:.85}100%{opacity:0}}
   .confirmation{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:6;
-    background:rgba(14,17,22,.94);border:1px solid rgba(255,255,255,.16);color:#eae5db;
+    background:rgba(14,17,22,.8);-webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou);
+    border:1px solid var(--verre-bord);color:#eae5db;
     font-size:11px;border-radius:8px;padding:4px 10px;white-space:nowrap}
 
-  /* halo d'activité */
   @property --angle-halo{syntax:'<angle>';initial-value:0deg;inherits:false}
-  .halo{position:absolute;inset:0;z-index:4;pointer-events:none;padding:2px;border-radius:0;
+  .halo{position:absolute;inset:0;z-index:4;pointer-events:none;padding:2px;
         background:conic-gradient(from var(--angle-halo),transparent 0deg 250deg,
           var(--accent) 300deg,var(--accent-d) 332deg,transparent 360deg);
         -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
@@ -189,8 +225,8 @@
     animation:pulse 1.4s ease-in-out infinite}
   @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
 
-  /* toast de notification */
-  .toast{position:absolute;right:12px;bottom:12px;z-index:30;background:rgba(14,17,22,.72);-webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou);
+  .toast{position:absolute;right:12px;bottom:12px;z-index:30;background:rgba(14,17,22,.72);
+    -webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou);
     border:1px solid var(--line2);border-left:3px solid var(--accent);border-radius:10px;
     padding:9px 12px;display:flex;gap:9px;align-items:center;max-width:270px;
     animation:toastK .35s ease-out;box-shadow:0 6px 24px rgba(0,0,0,.5)}
@@ -199,7 +235,6 @@
   .toast .t1{font-size:12px;color:var(--on-1)}
   .toast .t2{font-size:10.5px;color:var(--soft)}
 
-  /* relecture */
   .rel-haut{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line)}
   .rel-haut .choix-cam{display:flex;gap:5px}
   .rel-haut .choix-cam button{border:1px solid var(--line);background:none;color:var(--muted);
@@ -234,7 +269,6 @@
   .carte-det .infos{padding:4px 7px;font-size:10px;color:var(--muted)}
   .carte-det .infos b{display:block;color:var(--ink);font-size:11px;font-weight:600}
 
-  /* recherche */
   .rech{display:flex;flex:1;min-height:0}
   .rech-filtres{width:190px;flex:0 0 auto;border-right:1px solid var(--line);
     padding:12px;overflow-y:auto}
@@ -249,9 +283,9 @@
     grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;align-content:start}
   .rech-vide{grid-column:1/-1;color:var(--soft);font-size:12px;text-align:center;padding:30px 0}
 
-  /* alertes */
   .veilles-liste{padding:14px;display:flex;flex-direction:column;gap:10px;overflow-y:auto}
-  .veille{border:1px solid var(--line);border-radius:10px;padding:11px 13px;background:var(--card)}
+  .veille{border:1px solid var(--verre-bord);border-radius:10px;padding:11px 13px;
+    background:var(--carte-verre);-webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou)}
   .veille .haut{display:flex;align-items:center;gap:9px}
   .veille .haut b{font-size:13px;font-weight:600;flex:1}
   .veille .detail{font-size:11.5px;color:var(--muted);margin-top:3px}
@@ -263,20 +297,20 @@
   .inter.on{background:var(--accent-soft);border-color:var(--accent)}
   .inter.on i{left:17px;background:var(--accent)}
 
-  /* réglages */
   .regl{padding:16px;overflow-y:auto}
-  .regl .bloc{border:1px solid var(--line);border-radius:10px;padding:12px 14px;
-    background:var(--card);margin-bottom:10px}
+  .regl .bloc{border:1px solid var(--verre-bord);border-radius:10px;padding:12px 14px;
+    background:var(--carte-verre);-webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou);
+    margin-bottom:10px}
   .regl h5{font-size:12px;font-weight:650;margin-bottom:6px}
   .regl p{font-size:11.5px;color:var(--muted)}
   .hist-v{margin-top:8px;font-size:11.5px;color:var(--muted)}
   .hist-v b{color:var(--accent-d);font-family:Consolas,monospace;font-weight:600;font-size:11px}
 
-  /* modale nouveautés */
   .modale{position:absolute;inset:0;z-index:40;display:grid;place-items:center;
-    background:rgba(12,14,18,.72)}
+    background:rgba(12,14,18,.6);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
   .modale .carte-m{width:min(430px,90%);max-height:80%;display:flex;flex-direction:column;
-    background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+    background:rgba(35,39,46,.85);-webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou);
+    border:1px solid var(--verre-bord);border-radius:12px;overflow:hidden}
   .carte-m .tete-m{display:flex;gap:8px;align-items:center;padding:10px 13px;border-bottom:1px solid var(--line)}
   .carte-m .tete-m b{font-size:13px}
   .carte-m .corps-m{padding:10px 14px;overflow-y:auto;font-size:12px;color:var(--muted)}
@@ -285,9 +319,10 @@
   .carte-m .pied-m button{width:100%;border:0;border-radius:8px;background:var(--accent);
     color:#1b1e23;font-weight:600;font-size:12.5px;padding:8px;cursor:pointer}
 
-  /* ============================================== sections descriptives ======= */
+  /* ----------------------------------------------------- les sections ------ */
   .traits{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:30px}
-  .trait{background:var(--carte-verre);border:1px solid var(--verre-bord);border-radius:14px;padding:clamp(20px,1.8vw,30px);-webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou)}
+  .trait{background:var(--carte-verre);border:1px solid var(--verre-bord);border-radius:14px;
+    padding:clamp(20px,1.8vw,30px);-webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou)}
   .trait h3{font-size:15.5px;margin-bottom:9px;display:flex;align-items:center;gap:8px}
   .trait h3::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);flex:0 0 auto}
   .trait p{color:var(--muted);font-size:13.5px;margin-bottom:8px}
@@ -295,14 +330,16 @@
   .trait li{color:var(--muted);font-size:12.5px;padding-left:16px;position:relative}
   .trait li::before{content:"·";position:absolute;left:4px;color:var(--accent-d)}
 
-  .local{margin-top:70px;background:var(--carte-verre);-webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou);border:1px solid var(--accent);
-         border-radius:12px;padding:28px;text-align:center}
+  .local{margin-top:70px;background:var(--carte-verre);border:1px solid var(--accent);
+    -webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou);
+    border-radius:12px;padding:30px;text-align:center}
   .local h2{font-size:19px;margin-bottom:10px}
-  .local p{color:var(--muted);max-width:66ch;margin:0 auto 8px;font-size:14px}
+  .local p{color:var(--muted);max-width:70ch;margin:0 auto 8px;font-size:14px}
   .local .vert{color:var(--ok);font-weight:600}
 
   .etapes{counter-reset:etape;display:flex;flex-direction:column;gap:12px;max-width:820px;margin:26px auto 0}
-  .etape{display:flex;gap:14px;background:var(--carte-verre);-webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou);border:1px solid var(--verre-bord);
+  .etape{display:flex;gap:14px;background:var(--carte-verre);border:1px solid var(--verre-bord);
+    -webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou);
     border-radius:10px;padding:14px 16px}
   .etape::before{counter-increment:etape;content:counter(etape);width:26px;height:26px;
     flex:0 0 auto;display:grid;place-items:center;border-radius:50%;
@@ -310,12 +347,14 @@
   .etape div{font-size:13.5px;color:var(--muted)}
   .etape b{color:var(--ink);font-weight:600}
 
-  .faq{max-width:1100px;margin:26px auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:10px;align-items:start}
-  .faq details{background:var(--carte-verre);border:1px solid var(--verre-bord);border-radius:10px;padding:12px 16px;-webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou)}
+  .faq{max-width:1100px;margin:26px auto 0;display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:10px;align-items:start}
+  .faq details{background:var(--carte-verre);border:1px solid var(--verre-bord);border-radius:10px;
+    padding:12px 16px;-webkit-backdrop-filter:var(--verre-flou);backdrop-filter:var(--verre-flou)}
   .faq summary{cursor:pointer;font-size:13.5px;font-weight:600}
   .faq p{color:var(--muted);font-size:13px;margin-top:8px}
 
-  footer.site{margin-top:80px;padding-top:22px;border-top:1px solid var(--line);
+  footer.site{margin-top:84px;padding-top:22px;border-top:1px solid var(--line);
          color:var(--soft);font-size:13px;line-height:1.9;text-align:center}
 </style>
 </head>
@@ -323,11 +362,24 @@
 <div class="page">
 
   <header class="site">
+    <!-- La marque, fidele au trace maitre (docs/marque-alcor.svg) : les astres sont des
+         VIDES dans la plaque — ici par masque, pour rester transparents sur le verre —
+         et le couple pivote lentement, comme dans l'application. -->
     <svg class="marque" viewBox="0 0 64 64" aria-hidden="true">
-      <rect x="2" y="2" width="60" height="60" rx="14" fill="#d2a263"/>
-      <line x1="22" y1="40" x2="42" y2="24" stroke="#1b1e23" stroke-width="2.6" stroke-linecap="round"/>
-      <circle cx="22" cy="40" r="6.5" fill="#1b1e23"/>
-      <circle cx="42" cy="24" r="4" fill="#1b1e23"/>
+      <defs>
+        <mask id="creux">
+          <rect width="64" height="64" fill="#fff"/>
+          <g>
+            <animateTransform attributeName="transform" type="rotate"
+              from="0 32 32" to="360 32 32" dur="16s" repeatCount="indefinite"/>
+            <circle cx="25" cy="37" r="11" fill="#000"/>
+            <circle cx="45" cy="22" r="4.4" fill="#000"/>
+            <path d="M35.64 30.12L40.74 26.32L39.66 24.88L34.56 28.68Z" fill="#000"/>
+          </g>
+        </mask>
+      </defs>
+      <path fill="currentColor" mask="url(#creux)"
+        d="M18 4H46A14 14 0 0 1 60 18V46A14 14 0 0 1 46 60H18A14 14 0 0 1 4 46V18A14 14 0 0 1 18 4Z"/>
     </svg>
     <span class="nom">Alcora</span>
     <nav class="lang" aria-label="Langue">
@@ -337,49 +389,52 @@
   </header>
 
   <section class="hero">
-    <h1 class="fr">Vos caméras UniFi Protect.<br><em>Sans le nuage.</em></h1>
-    <h1 class="en">Your UniFi Protect cameras.<br><em>Without the cloud.</em></h1>
-    <p class="sous fr">Alcora est un client Windows qui parle directement à votre console,
-    sur votre réseau. Direct, relecture, détections, alertes — pas de compte Ubiquiti,
-    pas d'accès distant, pas de télémétrie.</p>
-    <p class="sous en">Alcora is a Windows client that talks directly to your console, on
-    your own network. Live, replay, detections, alerts — no Ubiquiti account, no remote
-    access, no telemetry.</p>
+    <h1 class="fr">UniFi Protect sur Windows.<br><em>En local, sans le nuage.</em></h1>
+    <h1 class="en">UniFi Protect on Windows.<br><em>Local, without the cloud.</em></h1>
+    <p class="sous fr">Alcora est une application Windows native pour les caméras UniFi
+    Protect. Elle parle directement à votre console, sur votre réseau : pas de compte
+    Ubiquiti, pas de navigateur, pas de dépendance à Internet. Direct, relecture,
+    détections, recherche et alertes.</p>
+    <p class="sous en">Alcora is a native Windows application for UniFi Protect cameras.
+    It talks directly to your console, on your own network: no Ubiquiti account, no
+    browser, no dependency on the Internet. Live view, replay, detections, search and
+    alerts.</p>
     <div class="boutons">
       <a class="btn btn-or fr" href="https://github.com/alcora-ch/Alcora-releases/releases/latest/download/Alcora-win-Setup.exe">Télécharger pour Windows</a>
       <a class="btn btn-or en" href="https://github.com/alcora-ch/Alcora-releases/releases/latest/download/Alcora-win-Setup.exe">Download for Windows</a>
-      <button class="btn btn-ligne fr" onclick="document.getElementById('demo').scrollIntoView()">Essayer la démo ↓</button>
-      <button class="btn btn-ligne en" onclick="document.getElementById('demo').scrollIntoView()">Try the demo ↓</button>
+      <button class="btn btn-ligne fr" onclick="document.getElementById('demo').scrollIntoView()">Voir la démonstration</button>
+      <button class="btn btn-ligne en" onclick="document.getElementById('demo').scrollIntoView()">See the demonstration</button>
     </div>
-    <p class="note-dl fr">Gratuit · open source (GPL-3.0) · se met à jour tout seul</p>
-    <p class="note-dl en">Free · open source (GPL-3.0) · keeps itself up to date</p>
+    <p class="note-dl fr">Gratuit · open source, GPL-3.0 · mises à jour automatiques vérifiées par empreinte</p>
+    <p class="note-dl en">Free · open source, GPL-3.0 · automatic updates verified by checksum</p>
   </section>
 
-  <!-- ================================================== LA DÉMO ============= -->
+  <!-- ================================================== LA DÉMONSTRATION ==== -->
   <section id="demo">
-    <h2 class="sec fr">Essayez-la. Là, maintenant.</h2>
-    <h2 class="sec en">Try it. Right here.</h2>
-    <p class="sec fr">Une reproduction fidèle de l'interface, aux données simulées.
-    Zoomez à la molette, glissez dans l'image, isolez une caméra (double-clic ou touches
-    1/2/0), parcourez la relecture, filtrez les détections. Tout est manipulable, rien
-    n'est réel.</p>
-    <p class="sec en">A faithful reproduction of the interface, on simulated data.
-    Mouse-wheel to zoom, drag inside the image, isolate a camera (double-click or keys
-    1/2/0), browse the replay, filter detections. Everything is interactive, nothing is
-    real. <em>The application is currently French-first; English arrives with the public
-    release.</em></p>
+    <h2 class="sec fr">La démonstration</h2>
+    <h2 class="sec en">The demonstration</h2>
+    <p class="sec fr">Une reproduction de l'interface, sur des données simulées — deux
+    images fixes tiennent lieu de caméras. Les gestes sont ceux de l'application :
+    molette pour zoomer dans l'image, glisser pour s'y déplacer, double-clic ou touches
+    1/2/0 pour isoler, la relecture sur sa frise, la recherche et ses filtres.
+    L'application est aujourd'hui en français ; l'anglais accompagne l'ouverture du code.</p>
+    <p class="sec en">A reproduction of the interface, on simulated data — two still
+    images stand in for cameras. The gestures are the application's own: mouse-wheel to
+    zoom into the image, drag to move around, double-click or keys 1/2/0 to isolate,
+    replay on its timeline, search and its filters. The application is currently in
+    French; English accompanies the source release.</p>
 
     <div class="demo-cadre">
       <div class="ruban">
         <span class="fr"><b>Démonstration</b> — données simulées, aucune caméra réelle.</span>
-        <span class="en"><b>Demo</b> — simulated data, no real cameras.</span>
+        <span class="en"><b>Demonstration</b> — simulated data, no real camera.</span>
         <button onclick="demoReinit()"><span class="fr">Réinitialiser</span><span class="en">Reset</span></button>
       </div>
       <div class="demo-scroll">
         <div class="alcapp" id="alcapp" tabindex="0">
 
           <div class="rail">
-            <svg class="logo" viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="14" fill="#d2a263"/><line x1="22" y1="40" x2="42" y2="24" stroke="#1b1e23" stroke-width="2.6"/><circle cx="22" cy="40" r="6.5" fill="#1b1e23"/><circle cx="42" cy="24" r="4" fill="#1b1e23"/></svg>
+            <svg class="logo" viewBox="0 0 64 64"><path fill="currentColor" fill-rule="evenodd" d="M18 4H46A14 14 0 0 1 60 18V46A14 14 0 0 1 46 60H18A14 14 0 0 1 4 46V18A14 14 0 0 1 18 4ZM14 37a11 11 0 1 0 22 0a11 11 0 1 0 -22 0ZM40.6 22a4.4 4.4 0 1 0 8.8 0a4.4 4.4 0 1 0 -8.8 0ZM35.64 30.12L40.74 26.32L39.66 24.88L34.56 28.68Z"/></svg>
             <button data-esp="direct" title="Direct" aria-current="true"><svg viewBox="0 0 24 24"><path d="M2 7a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z"/><path d="m17 9 5-3v12l-5-3"/></svg></button>
             <button data-esp="recherche" title="Détections"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
             <button data-esp="relecture" title="Relecture"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M8 5l2 4M14 5l2 4"/></svg></button>
@@ -404,13 +459,13 @@
             <div class="jauge"><i></i></div>
             <div class="ligne"><span class="k">Disque</span><span class="v">5,71 / 5,94 To</span></div>
             <h4>Versions</h4>
-            <div class="ligne"><span class="k">Alcora</span><span class="v" style="color:var(--ok)" id="v-demo">2.20.2</span></div>
+            <div class="ligne"><span class="k">Alcora</span><span class="v" style="color:var(--ok)">2.20.2</span></div>
             <div class="ligne"><span class="k">Protect</span><span class="v">7.1.87</span></div>
             <p class="pied-panneau">Aucune image ne quitte votre réseau.</p>
           </div>
 
           <div class="scene" id="scene">
-            <div class="espace-vue actif" data-vue="direct"><div class="mosaique deux" id="mosaique"></div></div>
+            <div class="espace-vue actif" data-vue="direct"><div class="mosaique" id="mosaique"></div></div>
             <div class="espace-vue" data-vue="recherche">
               <div class="rech">
                 <div class="rech-filtres">
@@ -432,7 +487,6 @@
               <div class="rel-image" id="rel-image">
                 <div class="flux" id="rel-flux"></div>
                 <div class="horodatage" id="rel-horodatage"></div>
-                <div class="badge-zoom" id="rel-badge" hidden></div>
               </div>
               <div class="transport">
                 <button class="lecture" id="rel-lecture" aria-label="Lecture">
@@ -459,8 +513,7 @@
                 <div class="bloc">
                   <h5>Version</h5>
                   <p>Alcora <b style="color:var(--ok)">2.20.2</b> — à jour. La mise à jour se
-                  vérifie à chaque lancement, se télécharge, se contrôle par empreinte et
-                  s'applique toute seule.</p>
+                  vérifie à chaque lancement, se contrôle par empreinte et s'applique seule.</p>
                   <p style="margin-top:8px"><button class="btn btn-ligne" style="padding:6px 14px;font-size:12px" onclick="ouvrirNouveautes()">Voir « Ce qui a changé »</button></p>
                 </div>
                 <div class="bloc">
@@ -479,131 +532,137 @@
     </div>
   </section>
 
-  <!-- ============================================== DESCRIPTIF ============== -->
-  <h2 class="sec fr">Ce qu'elle fait, en détail</h2>
-  <h2 class="sec en">What it does, in detail</h2>
+  <!-- ================================================== FONCTIONS =========== -->
+  <h2 class="sec fr">Fonctions</h2>
+  <h2 class="sec en">Features</h2>
   <div class="traits">
-    <div class="trait fr"><h3>Le mur du direct</h3>
-      <p>Toutes les caméras en mosaïque automatique, réorganisables à la souris. Un trait
-      lumineux entoure la caméra où il se passe quelque chose — et dit <em>quoi</em>.</p>
-      <ul><li>Zoom molette dans les vrais pixels de la source, jamais un simple agrandissement</li>
-      <li>Son caméra par caméra — jamais deux à la fois</li>
-      <li>Capture d'image en pleine définition</li>
-      <li>Clavier : 1–9 isole, 0 ramène la mosaïque, +/− zoome</li></ul></div>
-    <div class="trait en"><h3>The live wall</h3>
-      <p>Every camera in one auto-arranged mosaic, drag to reorder. A luminous trace
-      surrounds the camera where something is happening — and says <em>what</em>.</p>
-      <ul><li>Wheel-zoom into actual source pixels, never mere magnification</li>
-      <li>Per-camera audio — never two at once</li>
-      <li>Full-definition still capture</li>
-      <li>Keyboard: 1–9 isolates, 0 restores, +/− zooms</li></ul></div>
+    <div class="trait fr"><h3>Le direct</h3>
+      <p>Les caméras en mosaïque, dimensionnées automatiquement, réorganisables à la
+      souris. Un trait lumineux entoure la caméra où une détection est en cours, avec
+      son sujet en étiquette.</p>
+      <ul><li>Zoom à la molette dans les pixels de la source — un recadrage, pas un agrandissement</li>
+      <li>Son caméra par caméra, désactivé par défaut</li>
+      <li>Capture d'image à la définition de la source</li>
+      <li>Clavier : 1–9 isole une caméra, 0 rétablit la mosaïque, +/− zoome</li></ul></div>
+    <div class="trait en"><h3>Live view</h3>
+      <p>Cameras in an automatically sized mosaic, reorderable with the mouse. A light
+      trace surrounds the camera where a detection is in progress, with its subject as
+      a label.</p>
+      <ul><li>Wheel zoom into source pixels — a re-crop, not a magnification</li>
+      <li>Per-camera audio, off by default</li>
+      <li>Still capture at source definition</li>
+      <li>Keyboard: 1–9 isolates a camera, 0 restores the mosaic, +/− zooms</li></ul></div>
     <div class="trait fr"><h3>La relecture</h3>
-      <p>Une journée entière sur une frise zoomable, les détections en repères colorés.
-      La lecture s'enchaîne sans coupure, à toutes les vitesses.</p>
+      <p>Une journée entière se parcourt sur une frise, les détections en repères. La
+      lecture s'enchaîne sans coupure, de 0,25× à 2×, avec l'audio et l'image par image.</p>
       <ul><li>Navigation un jour à la fois, sur toute la profondeur de l'archive</li>
-      <li>Image par image, 0,25× à 2×, audio</li>
-      <li>La frontière de pleine définition est annoncée, jamais découverte</li></ul></div>
+      <li>La frontière de pleine définition est indiquée sur la frise</li>
+      <li>Capture d'image à la définition de l'enregistrement</li></ul></div>
     <div class="trait en"><h3>Replay</h3>
-      <p>A whole day on a zoomable timeline, detections as colored markers. Playback
-      chains seamlessly, at every speed.</p>
+      <p>A whole day browses on a timeline, detections as markers. Playback chains
+      without interruption, from 0.25× to 2×, with audio and frame stepping.</p>
       <ul><li>One day at a time, across the archive's full depth</li>
-      <li>Frame stepping, 0.25× to 2×, audio</li>
-      <li>The full-definition boundary is announced, never discovered</li></ul></div>
-    <div class="trait fr"><h3>La recherche</h3>
-      <p>Par sujet, type de véhicule, couleur, caméra ou plaque. Les filtres ne proposent
-      que ce qui existe vraiment dans votre archive, avec les comptes en regard.</p>
-      <ul><li>Recherche de plaque tolérante aux lectures ambiguës du contrôleur</li>
+      <li>The full-definition boundary is indicated on the timeline</li>
+      <li>Still capture at recording definition</li></ul></div>
+    <div class="trait fr"><h3>Les détections</h3>
+      <p>Recherche par sujet, type de véhicule, couleur, caméra ou plaque. Les filtres
+      ne proposent que ce qui existe dans votre archive, avec leur nombre.</p>
+      <ul><li>La recherche de plaque tolère les lectures ambiguës du contrôleur (0/O, 1/I…)</li>
       <li>Les derniers chiffres suffisent à retrouver un véhicule</li>
-      <li>Plaques et noms reconnus ne quittent jamais votre machine</li></ul></div>
-    <div class="trait en"><h3>Search</h3>
-      <p>By subject, vehicle type, colour, camera or licence plate. Filters only offer
-      what actually exists in your archive, with real counts.</p>
-      <ul><li>Plate search tolerant of the controller's ambiguous reads</li>
-      <li>The last few digits find a vehicle</li>
-      <li>Plates and recognised names never leave your machine</li></ul></div>
-    <div class="trait fr"><h3>Les veilles</h3>
-      <p>Vos propres règles d'alerte, indépendantes de Protect : sujets, caméras,
-      horaires, son. Et chaque règle annonce son volume — combien de notifications par
-      jour elle aurait produites, mesuré sur votre archive.</p>
-      <ul><li>Notifications Windows par liaison temps réel permanente</li>
-      <li>Mesurées plus rapides que celles du nuage d'Ubiquiti</li>
-      <li>Une image de l'instant dans chaque notification</li></ul></div>
-    <div class="trait en"><h3>Watches</h3>
-      <p>Your own alert rules, independent of Protect's: subjects, cameras, schedules,
-      sound. Each rule announces its volume — how many notifications per day it would
-      have produced, measured on your archive.</p>
-      <ul><li>Windows notifications over a persistent realtime link</li>
-      <li>Measured faster than Ubiquiti's own cloud notifications</li>
-      <li>A snapshot of the moment in every notification</li></ul></div>
+      <li>Plaques et noms reconnus ne sont jamais affichés ni transmis</li></ul></div>
+    <div class="trait en"><h3>Detections</h3>
+      <p>Search by subject, vehicle type, colour, camera or licence plate. Filters only
+      offer what exists in your archive, with their counts.</p>
+      <ul><li>Plate search tolerates the controller's ambiguous reads (0/O, 1/I…)</li>
+      <li>The last few digits are enough to find a vehicle</li>
+      <li>Recognised plates and names are never displayed nor transmitted</li></ul></div>
+    <div class="trait fr"><h3>Les alertes</h3>
+      <p>Des règles propres à Alcora, indépendantes de l'armement de Protect : sujets,
+      caméras, plages horaires, son. Chaque règle affiche le volume de notifications
+      qu'elle aurait produit, mesuré sur votre archive.</p>
+      <ul><li>Notifications Windows, par liaison directe et permanente à la console</li>
+      <li>Aucun détour par un serveur tiers</li>
+      <li>Une image de l'instant accompagne chaque notification</li></ul></div>
+    <div class="trait en"><h3>Alerts</h3>
+      <p>Rules of Alcora's own, independent from Protect's arming: subjects, cameras,
+      schedules, sound. Each rule shows the notification volume it would have produced,
+      measured on your archive.</p>
+      <ul><li>Windows notifications, over a direct, persistent link to the console</li>
+      <li>No detour through any third-party server</li>
+      <li>A snapshot of the moment accompanies each notification</li></ul></div>
   </div>
 
+  <!-- ================================================== CONFIDENTIALITÉ ===== -->
   <section class="local">
     <h2 class="fr">Aucune image ne quitte votre réseau.</h2>
-    <h2 class="en">No image ever leaves your network.</h2>
-    <p class="fr">Alcora parle à votre console et, pour ses mises à jour, à GitHub. À rien
-    d'autre, jamais. L'identité de la console est épinglée après le premier appairage, vos
-    identifiants sont chiffrés par Windows, et le relais vidéo n'écoute qu'en local.
-    <span class="vert">Si votre réseau est debout, Alcora fonctionne.</span></p>
-    <p class="en">Alcora talks to your console and, for updates, to GitHub. Nothing else,
-    ever. The console's identity is pinned after first pairing, your credentials are
-    encrypted by Windows, and the video relay listens on localhost only.
-    <span class="vert">If your network is up, Alcora works.</span></p>
+    <h2 class="en">No image leaves your network.</h2>
+    <p class="fr">Alcora communique avec votre console et, pour ses mises à jour, avec
+    GitHub. Avec rien d'autre. L'identité de la console est épinglée après le premier
+    appairage ; les identifiants sont chiffrés par Windows, liés à votre session ; le
+    relais vidéo n'écoute qu'en local. <span class="vert">Sans Internet, tout fonctionne —
+    seules les mises à jour attendent.</span></p>
+    <p class="en">Alcora communicates with your console and, for updates, with GitHub.
+    With nothing else. The console's identity is pinned after first pairing; credentials
+    are encrypted by Windows, bound to your session; the video relay listens on localhost
+    only. <span class="vert">Without Internet, everything works — only updates wait.</span></p>
   </section>
 
-  <h2 class="sec fr">Installer, en trois gestes</h2>
-  <h2 class="sec en">Install, in three steps</h2>
+  <!-- ================================================== INSTALLATION ======== -->
+  <h2 class="sec fr">Installation</h2>
+  <h2 class="sec en">Installation</h2>
   <div class="etapes">
     <div class="etape fr"><div><b>Téléchargez et lancez l'installeur.</b> Windows peut
-      afficher un avertissement SmartScreen — l'installeur est signé, mais d'un certificat
-      auto-émis : « Informations complémentaires », puis « Exécuter quand même ».</div></div>
+      afficher un avertissement SmartScreen : l'installeur est signé, mais d'un
+      certificat auto-émis — « Informations complémentaires », puis « Exécuter quand
+      même ». Chaque mise à jour est ensuite vérifiée par empreinte SHA-256.</div></div>
     <div class="etape en"><div><b>Download and run the installer.</b> Windows may show a
-      SmartScreen warning — the installer is signed, but with a self-issued certificate:
-      “More info”, then “Run anyway”.</div></div>
-    <div class="etape fr"><div><b>Activez le RTSP</b> sur chaque caméra (Protect → caméra →
-      Avancé) et créez un <b>compte local dédié</b> sur la console, avec droits de
-      visionnage.</div></div>
-    <div class="etape en"><div><b>Enable RTSP</b> on each camera (Protect → camera →
-      Advanced) and create a <b>dedicated local account</b> on the console, with viewing
-      rights.</div></div>
-    <div class="etape fr"><div><b>Connectez Alcora</b> : adresse de la console, le compte
-      dédié, et sa clé à deux facteurs s'il en a une — les codes sont générés localement,
-      on ne vous en demandera plus jamais.</div></div>
-    <div class="etape en"><div><b>Connect Alcora</b>: the console's address, the dedicated
-      account, and its two-factor key if it has one — codes are generated locally, you'll
-      never be asked for one again.</div></div>
+      SmartScreen warning: the installer is signed, but with a self-issued certificate —
+      “More info”, then “Run anyway”. Every update is then verified by SHA-256
+      checksum.</div></div>
+    <div class="etape fr"><div><b>Préparez la console :</b> le RTSP activé sur chaque
+      caméra (Protect → caméra → Avancé), et un compte local dédié à Alcora, avec droits
+      de visionnage — pas votre compte propriétaire.</div></div>
+    <div class="etape en"><div><b>Prepare the console:</b> RTSP enabled on each camera
+      (Protect → camera → Advanced), and a dedicated local account for Alcora, with
+      viewing rights — not your owner account.</div></div>
+    <div class="etape fr"><div><b>Connectez Alcora :</b> l'adresse de la console, le
+      compte dédié, et sa clé à deux facteurs s'il en a une — les codes sont générés
+      localement, une fois pour toutes.</div></div>
+    <div class="etape en"><div><b>Connect Alcora:</b> the console's address, the
+      dedicated account, and its two-factor key if it has one — codes are generated
+      locally, once and for all.</div></div>
   </div>
 
-  <h2 class="sec fr">Questions franches</h2>
-  <h2 class="sec en">Straight answers</h2>
+  <!-- ================================================== QUESTIONS =========== -->
+  <h2 class="sec fr">Questions</h2>
+  <h2 class="sec en">Questions</h2>
   <div class="faq">
     <details class="fr"><summary>Pourquoi un avertissement Windows à l'installation ?</summary>
       <p>Le certificat de signature est auto-émis plutôt qu'acheté à une autorité
       commerciale. La signature garantit l'intégrité du binaire ; l'avertissement dit
-      seulement que Windows ne connaît pas l'éditeur. Chaque mise à jour est en plus
-      vérifiée par empreinte SHA-256 contre un manifeste signé.</p></details>
+      seulement que Windows ne connaît pas l'éditeur.</p></details>
     <details class="en"><summary>Why a Windows warning at install time?</summary>
       <p>The signing certificate is self-issued rather than bought from a commercial
       authority. The signature guarantees the binary's integrity; the warning only says
-      Windows doesn't know the publisher. Every update is additionally verified by SHA-256
-      against a signed manifest.</p></details>
-    <details class="fr"><summary>Ça fonctionne sans Internet ?</summary>
-      <p>Oui — c'est le principe. Alcora ne dépend que de votre réseau local. Internet ne
-      sert qu'aux mises à jour, qui attendront sans gêner le reste.</p></details>
-    <details class="en"><summary>Does it work without Internet?</summary>
-      <p>Yes — that's the point. Alcora only depends on your local network. Internet is
-      only used for updates, which will simply wait.</p></details>
+      Windows does not know the publisher.</p></details>
+    <details class="fr"><summary>Sans Internet, que se passe-t-il ?</summary>
+      <p>Tout fonctionne : Alcora ne dépend que de votre réseau local. Internet ne sert
+      qu'aux mises à jour, qui attendent sans gêner le reste.</p></details>
+    <details class="en"><summary>Without Internet, what happens?</summary>
+      <p>Everything works: Alcora only depends on your local network. The Internet is
+      only used for updates, which simply wait.</p></details>
     <details class="fr"><summary>Sur ARM64 (Surface, etc.) ?</summary>
-      <p>Alcora est construite en x64 et tourne en émulation sur Windows ARM64 — vérifié
-      en conditions réelles, vidéo fluide comprise.</p></details>
+      <p>Alcora est construite pour x64 et fonctionne en émulation sur Windows ARM64 —
+      vérifié en conditions réelles, lecture vidéo comprise.</p></details>
     <details class="en"><summary>On ARM64 (Surface, etc.)?</summary>
       <p>Alcora is built for x64 and runs emulated on Windows ARM64 — verified in real
-      conditions, smooth video included.</p></details>
+      conditions, video playback included.</p></details>
     <details class="fr"><summary>Le code est-il public ?</summary>
-      <p>Alcora est open source sous GPL-3.0. Le dépôt du code ouvre prochainement — les
-      binaires signés et leur manifeste sont déjà publics.</p></details>
+      <p>Alcora est sous licence GPL-3.0. Le dépôt du code ouvre prochainement ; les
+      binaires signés et leur manifeste de vérification sont déjà publics.</p></details>
     <details class="en"><summary>Is the code public?</summary>
-      <p>Alcora is open source under GPL-3.0. The source repository opens soon — the
-      signed binaries and their manifest are already public.</p></details>
+      <p>Alcora is licensed under GPL-3.0. The source repository opens soon; the signed
+      binaries and their verification manifest are already public.</p></details>
   </div>
 
   <footer class="site">
@@ -611,12 +670,12 @@
     « UniFi Protect » sont des marques de Ubiquiti Inc.<br>
     Open source sous <a href="https://www.gnu.org/licenses/gpl-3.0">GPL-3.0</a> ·
     <a href="https://github.com/alcora-ch/Alcora-releases/releases">Versions</a> ·
-    Faille de sécurité : <a href="mailto:security@alcora.ch">security@alcora.ch</a></span>
+    Sécurité : <a href="mailto:security@alcora.ch">security@alcora.ch</a></span>
     <span class="en">Alcora is not affiliated with, nor endorsed by, Ubiquiti Inc.
     “UniFi” and “UniFi Protect” are trademarks of Ubiquiti Inc.<br>
     Open source under <a href="https://www.gnu.org/licenses/gpl-3.0">GPL-3.0</a> ·
     <a href="https://github.com/alcora-ch/Alcora-releases/releases">Releases</a> ·
-    Security issues: <a href="mailto:security@alcora.ch">security@alcora.ch</a></span>
+    Security: <a href="mailto:security@alcora.ch">security@alcora.ch</a></span>
   </footer>
 </div>
 
@@ -635,9 +694,8 @@ try{
 }catch(e){}
 
 /* ================================================================== DÉMO ==
-   Une reproduction de l'interface d'Alcora, autonome et simulée. Les gestes
-   sont les vrais — zoom molette dans l'image, glisser, isolement, halo,
-   frise — mais aucune caméra n'existe : deux photographies en tiennent lieu. */
+   Une reproduction de l'interface d'Alcora, autonome et simulée. Les gestes sont
+   les vrais ; deux photographies tiennent lieu de cameras. */
 
 const CAMS = [
   { id:'allee',   nom:'Allée',   img:'assets/allee.jpg',   def:'4K',  son:true  },
@@ -646,18 +704,17 @@ const CAMS = [
 const SUJETS = { personne:['Personne','#e6b877'], vehicule:['Véhicule','#7fa8c9'],
                  animal:['Animal','#8fae5a'], son:['Parole','#b98fc9'] };
 
-/* Un jour de détections, déterministe : le même pour chaque visiteur. */
+/* Un jour de detections, deterministe : le meme pour chaque visiteur. */
 function fabriquerJour(){
   const evts=[]; let g=7;
   const alea=()=> (g = (g*16807)%2147483647) / 2147483647;
   const types=['personne','personne','vehicule','vehicule','vehicule','animal','son'];
   for(let i=0;i<38;i++){
-    const h = 6 + alea()*16;                       // la vie entre 06h et 22h
+    const h = 6 + alea()*16;
     const t = types[Math.floor(alea()*types.length)];
     const cam = CAMS[alea()<0.6?0:1];
     const plaque = t==='vehicule' ? ('VD '+(100000+Math.floor(alea()*899999))) : null;
-    evts.push({ min: Math.floor(h*60), type:t, cam, plaque,
-                pos: Math.floor(alea()*70) });
+    evts.push({ min: Math.floor(h*60), type:t, cam, plaque, pos: Math.floor(alea()*70) });
   }
   return evts.sort((a,b)=>a.min-b.min);
 }
@@ -677,34 +734,14 @@ function allerEspace(e){
 $$('.rail button[data-esp]').forEach(b=>b.addEventListener('click',()=>allerEspace(b.dataset.esp)));
 
 /* ----------------------------------------------------------------- direct */
-const etatTuiles = {};   // par camera : { zoom, px, py, sonActif }
+const etatTuiles = {};
 let isolee = null;
 let masquees = new Set();
 
-function tuileHtml(c){
-  return `
-  <div class="tuile" data-cam="${c.id}">
-    <div class="bandeau">
-      <span class="nom-cam">${c.nom}</span><span class="badge-def">${c.def}</span>
-      <button class="cmd" title="Revoir cette caméra" onclick="demoRelecture('${c.id}')"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
-      <button class="cmd" title="Ses détections" onclick="demoDetections('${c.id}')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
-      <button class="cmd" title="Enregistrer une image" onclick="demoCapture('${c.id}')"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.4"/></svg></button>
-      <button class="cmd cmd-son" title="${c.son?'Activer le son':'Ce flux ne porte pas de son'}" ${c.son?'':'disabled'} onclick="demoSon('${c.id}')"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="ondes" d="M15.5 8.5a5 5 0 0 1 0 7" ${c.son?'':'display="none"'}/></svg></button>
-    </div>
-    <div class="image" data-cam="${c.id}">
-      <div class="flux" style="background-image:url('${c.img}')"></div>
-      <div class="horodatage"></div>
-      <div class="badge-zoom" hidden></div>
-      <div class="flash"></div>
-    </div>
-  </div>`;
-}
-
 /*
- * La grille du vrai Alcora, en miniature : chaque tuile est DIMENSIONNEE pour que son
- * image reste en 16:9 — bandeau compris — et la grille ne fait que centrer le resultat.
- * Une grille CSS qui etire donnait des flux ecrases en portrait, ce qui ne ressemble a
- * aucune camera du monde.
+ * La grille du vrai Alcora : chaque disposition candidate est evaluee, la tuile y est
+ * dimensionnee pour que l'image reste en 16:9 bandeau compris, la plus grande surface
+ * d'image gagne. La grille CSS ne fait que centrer.
  */
 const BANDEAU = 30, MARGE = 8;
 function dimensionnerMosaique(){
@@ -725,6 +762,25 @@ function dimensionnerMosaique(){
 }
 window.addEventListener('resize', dimensionnerMosaique);
 
+function tuileHtml(c){
+  return `
+  <div class="tuile" data-cam="${c.id}">
+    <div class="bandeau">
+      <span class="nom-cam">${c.nom}</span><span class="badge-def">${c.def}</span>
+      <button class="cmd" title="Revoir cette caméra" onclick="demoRelecture('${c.id}')"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+      <button class="cmd" title="Ses détections" onclick="demoDetections('${c.id}')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <button class="cmd" title="Enregistrer une image" onclick="demoCapture('${c.id}')"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.4"/></svg></button>
+      <button class="cmd cmd-son" title="${c.son?'Activer le son':'Ce flux ne porte pas de son'}" ${c.son?'':'disabled'} onclick="demoSon('${c.id}')"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="ondes" d="M15.5 8.5a5 5 0 0 1 0 7" ${c.son?'':'display="none"'}/></svg></button>
+    </div>
+    <div class="image" data-cam="${c.id}">
+      <div class="flux" style="background-image:url('${c.img}')"></div>
+      <div class="horodatage"></div>
+      <div class="badge-zoom" hidden></div>
+      <div class="flash"></div>
+    </div>
+  </div>`;
+}
+
 function rendreMosaique(){
   const visibles = CAMS.filter(c=>!masquees.has(c.id) && (!isolee || isolee===c.id));
   const m=$('#mosaique');
@@ -737,7 +793,19 @@ function rendreMosaique(){
   rendrePanneauCams();
 }
 
+/*
+ * Le deplacement est BORNE par le zoom : le centre visible ne peut approcher un bord
+ * qu'a 1/(2·zoom) — exactement la borne du recadrage dans l'application. Sans elle, un
+ * seul cran de zoom laissait glisser l'image hors de son cadre, sur du noir.
+ */
+function bornerPan(e){
+  const lim = 1/(2*e.zoom);
+  e.px = Math.min(1-lim, Math.max(lim, e.px));
+  e.py = Math.min(1-lim, Math.max(lim, e.py));
+}
+
 function appliquerTransforme(el, e){
+  bornerPan(e);
   const flux = el.querySelector('.flux');
   flux.style.transform = `scale(${e.zoom}) translate(${(0.5-e.px)*100}%, ${(0.5-e.py)*100}%)`;
   const badge = el.querySelector('.badge-zoom');
@@ -761,15 +829,14 @@ function brancherImage(c, e, el){
     ev.preventDefault(); glisse={x:ev.clientX,y:ev.clientY}; el.setPointerCapture(ev.pointerId); });
   el.addEventListener('pointermove',(ev)=>{ if(!glisse) return;
     const r=el.getBoundingClientRect();
-    e.px=Math.min(1,Math.max(0,e.px-(ev.clientX-glisse.x)/r.width/e.zoom));
-    e.py=Math.min(1,Math.max(0,e.py-(ev.clientY-glisse.y)/r.height/e.zoom));
+    e.px=e.px-(ev.clientX-glisse.x)/r.width/e.zoom;
+    e.py=e.py-(ev.clientY-glisse.y)/r.height/e.zoom;
     glisse={x:ev.clientX,y:ev.clientY}; appliquerTransforme(el,e); });
   const fin=()=>{glisse=null};
   el.addEventListener('pointerup',fin); el.addEventListener('pointercancel',fin);
   el.addEventListener('dblclick',()=>{ isolee = (isolee===c.id? null : c.id); rendreMosaique(); });
 }
 
-/* horodatage vivant sur chaque image */
 setInterval(()=>{
   const t=new Date();
   const s=`${String(t.getDate()).padStart(2,'0')}.${String(t.getMonth()+1).padStart(2,'0')}.${t.getFullYear()}  ${t.toLocaleTimeString('fr-CH')}`;
@@ -826,7 +893,6 @@ function pousserVive(evt, quand){
     </button>`).join('');
 }
 
-/* histogramme du jour */
 (function(){
   const h=new Array(24).fill(0);
   JOUR.forEach(e=>h[Math.floor(e.min/60)]++);
@@ -835,8 +901,7 @@ function pousserVive(evt, quand){
   $('#compte-jour').textContent=JOUR.length;
 })();
 
-/* ------------------------------------------ l'activité simulée (halo) */
-let minuteurHalo=null;
+/* ------------------------------------------ l'activite simulee (halo) */
 function cycleActivite(){
   const visibles=CAMS.filter(c=>!masquees.has(c.id));
   const cam=visibles[Math.floor(Math.random()*visibles.length)] ?? CAMS[0];
@@ -885,12 +950,10 @@ function rendreRelecture(){
   const cam=CAMS.find(c=>c.id===relCam);
   const flux=$('#rel-flux');
   flux.style.backgroundImage=`url('${cam.img}')`;
-  // Un lecteur video LETTERBOXE : l'image entiere, bandes noires autour — jamais un
-  // recadrage qui ecrase. C'est ce que fait le vrai lecteur (object-fit: contain).
   flux.style.backgroundPosition='center';
   flux.style.backgroundSize='contain';
   flux.style.backgroundRepeat='no-repeat';
-  $('#rel-horodatage').textContent=`Aujourd'hui  ${hm(relMin)}:${String(relMin%60*0+((relMin*13)%60)).padStart(2,'0')}`;
+  $('#rel-horodatage').textContent=`Aujourd'hui  ${hm(relMin)}:${String((relMin*13)%60).padStart(2,'0')}`;
   $('#rel-heure-titre').textContent=hm(relMin);
   $('#tete').style.left=(relMin/1440*100)+'%';
   $('#ic-play').hidden=relEnLecture; $('#ic-pause').hidden=!relEnLecture;
@@ -941,7 +1004,7 @@ function rendreRecherche(){
       <div class="apercu" style="background-image:url('${e.cam.img}');background-position:${e.pos}% 40%"></div>
       <div class="infos"><b>${hm(e.min)} · ${SUJETS[e.type][0]}</b>${e.cam.nom}${e.plaque?' · '+e.plaque:''}</div>
     </div>`).join('')
-    : `<div class="rech-vide">Rien ne correspond — les filtres ne mentent pas.</div>`;
+    : `<div class="rech-vide">Rien ne correspond aux filtres.</div>`;
 }
 function basculerSujet(k){ filtreSujets.has(k)?filtreSujets.delete(k):filtreSujets.add(k); rendreRecherche(); }
 $('#rech-texte').addEventListener('input',(e)=>{ filtreTexte=e.target.value; rendreRecherche(); });
@@ -959,11 +1022,11 @@ function rendreVeilles(){
       <div class="detail">${v.detail}</div>
       <div class="volume">≈ ${v.vol} notification${v.vol>1?'s':''} / jour, mesuré sur l'archive</div>
     </div>`).join('')+
-    `<p style="font-size:11px;color:var(--soft);padding:0 2px">Les veilles d'Alcora sont
-    indépendantes de l'armement de Protect : vos règles, votre rythme.</p>`;
+    `<p style="font-size:11px;color:var(--soft);padding:0 2px">Les règles d'Alcora sont
+    indépendantes de l'armement de Protect.</p>`;
 }
 
-/* --------------------------------------------------------- nouveautés */
+/* --------------------------------------------------------- nouveautes */
 function ouvrirNouveautes(){
   $('#zone-modale').innerHTML=`
   <div class="modale"><div class="carte-m">
@@ -991,7 +1054,7 @@ function demoReinit(){
 }
 rendreMosaique(); rendreRelecture(); rendreRecherche(); rendreVeilles();
 setTimeout(cycleActivite, 3500);
-minuteurHalo=setInterval(cycleActivite, 21000);
+setInterval(cycleActivite, 21000);
 </script>
 </body>
 </html>
