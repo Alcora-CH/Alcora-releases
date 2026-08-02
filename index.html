@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alcora — vos caméras UniFi Protect, sans le nuage</title>
+<meta name="description" content="Client Windows pour UniFi Protect : direct, relecture, détections, alertes — entièrement local, sans compte ni télémétrie. Open source (GPL-3.0).">
+<style>
+  :root{
+    --bg:#1b1e23; --card:#23272e; --card2:#2a2f37; --line:#353b44;
+    --ink:#dad5cb; --muted:#9a958b; --soft:#75716a;
+    --accent:#d2a263; --accent-d:#e6b877; --ok:#8fae5a;
+  }
+  *{box-sizing:border-box;margin:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);
+       font:16px/1.65 "Segoe UI",system-ui,-apple-system,sans-serif;
+       -webkit-font-smoothing:antialiased}
+  .page{max-width:880px;margin:0 auto;padding:0 24px 90px}
+  a{color:var(--accent-d);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  header{display:flex;align-items:center;gap:14px;padding:26px 0 0}
+  .marque{width:44px;height:44px;flex:0 0 auto}
+  .nom{font-size:20px;font-weight:650;letter-spacing:-.01em}
+  .lang{margin-left:auto;display:flex;gap:4px}
+  .lang button{background:none;border:1px solid var(--line);color:var(--soft);
+    border-radius:7px;padding:3px 10px;font-size:12.5px;cursor:pointer}
+  .lang button[aria-pressed="true"]{color:var(--accent-d);border-color:var(--accent)}
+
+  .hero{padding:72px 0 40px;text-align:center}
+  h1{font-size:clamp(28px,5.2vw,44px);font-weight:650;letter-spacing:-.02em;line-height:1.15}
+  h1 em{font-style:normal;color:var(--accent-d)}
+  .sous{color:var(--muted);max-width:56ch;margin:18px auto 0;font-size:17.5px}
+  .boutons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+  .btn{display:inline-block;border-radius:10px;padding:12px 26px;font-weight:600;font-size:15px}
+  .btn-or{background:var(--accent);color:#1b1e23}
+  .btn-or:hover{background:var(--accent-d);text-decoration:none}
+  .btn-ligne{border:1px solid var(--line);color:var(--ink)}
+  .btn-ligne:hover{border-color:var(--accent);text-decoration:none}
+  .note-dl{margin-top:12px;font-size:12.5px;color:var(--soft)}
+
+  .grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:56px}
+  .carte{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .carte h3{font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .carte h3::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);flex:0 0 auto}
+  .carte p{color:var(--muted);font-size:14px}
+
+  .local{margin-top:56px;background:var(--card);border:1px solid var(--accent);
+         border-radius:12px;padding:26px;text-align:center}
+  .local h2{font-size:19px;margin-bottom:10px}
+  .local p{color:var(--muted);max-width:62ch;margin:0 auto;font-size:14.5px}
+  .local .vert{color:var(--ok);font-weight:600}
+
+  .prerequis{margin-top:56px}
+  .prerequis h2{font-size:17px;margin-bottom:14px}
+  .prerequis ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .prerequis li{color:var(--muted);font-size:14.5px;padding-left:22px;position:relative}
+  .prerequis li::before{content:"—";position:absolute;left:0;color:var(--accent)}
+
+  footer{margin-top:70px;padding-top:22px;border-top:1px solid var(--line);
+         color:var(--soft);font-size:13px;line-height:1.9;text-align:center}
+  [hidden]{display:none !important}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <!-- La marque : la plaque d'or, Mizar et Alcor en creux, reliées par le trait des atlas. -->
+    <svg class="marque" viewBox="0 0 64 64" aria-hidden="true">
+      <rect x="2" y="2" width="60" height="60" rx="14" fill="#d2a263"/>
+      <line x1="22" y1="40" x2="42" y2="24" stroke="#1b1e23" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="22" cy="40" r="6.5" fill="#1b1e23"/>
+      <circle cx="42" cy="24" r="4" fill="#1b1e23"/>
+    </svg>
+    <span class="nom">Alcora</span>
+    <nav class="lang" aria-label="Langue">
+      <button id="btn-fr" aria-pressed="true" onclick="langue('fr')">FR</button>
+      <button id="btn-en" aria-pressed="false" onclick="langue('en')">EN</button>
+    </nav>
+  </header>
+
+  <!-- ================================ FRANÇAIS ================================ -->
+  <main id="fr">
+    <section class="hero">
+      <h1>Vos caméras UniFi Protect.<br><em>Sans le nuage.</em></h1>
+      <p class="sous">Alcora est un client Windows qui parle directement à votre console,
+      sur votre réseau. Direct, relecture, détections, alertes — pas de compte Ubiquiti,
+      pas d'accès distant, pas de télémétrie.</p>
+      <div class="boutons">
+        <a class="btn btn-or" href="https://github.com/dentalsystems/Alcora-releases/releases/latest/download/Alcora-win-Setup.exe">Télécharger pour Windows</a>
+        <a class="btn btn-ligne" href="https://github.com/dentalsystems/Alcora-releases/releases">Toutes les versions</a>
+      </div>
+      <p class="note-dl">Gratuit · open source (GPL-3.0) · se met à jour tout seul</p>
+    </section>
+
+    <section class="grille">
+      <div class="carte"><h3>Le mur du direct</h3>
+        <p>Toutes les caméras en mosaïque, zoom dans les vrais pixels de la source,
+        son caméra par caméra, halo sur la caméra où il se passe quelque chose.</p></div>
+      <div class="carte"><h3>La relecture</h3>
+        <p>Une journée entière se parcourt sur une frise zoomable, détections en repères,
+        lecture sans coupure, image par image, captures en pleine définition.</p></div>
+      <div class="carte"><h3>La recherche</h3>
+        <p>Par sujet, véhicule, couleur ou plaque — les filtres ne proposent que ce qui
+        existe vraiment dans votre archive, avec les comptes en regard.</p></div>
+      <div class="carte"><h3>Les veilles</h3>
+        <p>Vos propres règles d'alerte, indépendantes de Protect. Les notifications
+        arrivent en direct de la console — plus vite que celles du nuage.</p></div>
+    </section>
+
+    <section class="local">
+      <h2>Aucune image ne quitte votre réseau.</h2>
+      <p>Alcora parle à votre console et, pour ses mises à jour, à GitHub. À rien d'autre,
+      jamais. L'identité de la console est épinglée après le premier appairage, vos
+      identifiants sont chiffrés par Windows, et le relais vidéo n'écoute qu'en local.
+      <span class="vert">Si votre réseau est debout, Alcora fonctionne.</span></p>
+    </section>
+
+    <section class="prerequis">
+      <h2>Ce qu'il vous faut</h2>
+      <ul>
+        <li>Windows 10 ou 11 — x64, et ARM64 en émulation.</li>
+        <li>Une console UniFi Protect (UDM Pro, UNVR, Cloud Key G2+…) sur votre réseau.</li>
+        <li>Le RTSP activé sur chaque caméra, dans les réglages avancés de Protect.</li>
+        <li>Un compte local dédié sur la console — pas votre compte propriétaire.</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- ================================ ENGLISH ================================ -->
+  <main id="en" hidden>
+    <section class="hero">
+      <h1>Your UniFi Protect cameras.<br><em>Without the cloud.</em></h1>
+      <p class="sous">Alcora is a Windows client that talks directly to your console, on
+      your own network. Live, replay, detections, alerts — no Ubiquiti account, no remote
+      access, no telemetry.</p>
+      <div class="boutons">
+        <a class="btn btn-or" href="https://github.com/dentalsystems/Alcora-releases/releases/latest/download/Alcora-win-Setup.exe">Download for Windows</a>
+        <a class="btn btn-ligne" href="https://github.com/dentalsystems/Alcora-releases/releases">All releases</a>
+      </div>
+      <p class="note-dl">Free · open source (GPL-3.0) · keeps itself up to date</p>
+    </section>
+
+    <section class="grille">
+      <div class="carte"><h3>The live wall</h3>
+        <p>Every camera in one mosaic, zoom into the actual source pixels, per-camera
+        audio, and a halo around the camera where something is happening.</p></div>
+      <div class="carte"><h3>Replay</h3>
+        <p>Browse a whole day on a zoomable timeline, detections as markers, seamless
+        playback, frame stepping, stills at source definition.</p></div>
+      <div class="carte"><h3>Search</h3>
+        <p>By subject, vehicle, colour or licence plate — filters only offer what actually
+        exists in your archive, with real counts.</p></div>
+      <div class="carte"><h3>Watches</h3>
+        <p>Your own alert rules, independent of Protect. Notifications arrive straight
+        from the console — measured faster than the cloud's.</p></div>
+    </section>
+
+    <section class="local">
+      <h2>No image ever leaves your network.</h2>
+      <p>Alcora talks to your console and, for updates, to GitHub. Nothing else, ever.
+      The console's identity is pinned after first pairing, your credentials are encrypted
+      by Windows, and the video relay listens on localhost only.
+      <span class="vert">If your network is up, Alcora works.</span></p>
+    </section>
+
+    <section class="prerequis">
+      <h2>What you need</h2>
+      <ul>
+        <li>Windows 10 or 11 — x64, or ARM64 under emulation.</li>
+        <li>A UniFi Protect console (UDM Pro, UNVR, Cloud Key G2+…) on your network.</li>
+        <li>RTSP enabled per camera, in Protect's advanced settings.</li>
+        <li>A dedicated local account on the console — not your owner account.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <span id="pied-fr">Alcora n'est ni affilié ni approuvé par Ubiquiti Inc. « UniFi » et
+    « UniFi Protect » sont des marques de Ubiquiti Inc.<br>
+    Open source sous <a href="https://www.gnu.org/licenses/gpl-3.0">GPL-3.0</a> ·
+    Faille de sécurité : <a href="mailto:security@alcora.ch">security@alcora.ch</a></span>
+    <span id="pied-en" hidden>Alcora is not affiliated with, nor endorsed by, Ubiquiti Inc.
+    “UniFi” and “UniFi Protect” are trademarks of Ubiquiti Inc.<br>
+    Open source under <a href="https://www.gnu.org/licenses/gpl-3.0">GPL-3.0</a> ·
+    Security issues: <a href="mailto:security@alcora.ch">security@alcora.ch</a></span>
+  </footer>
+</div>
+
+<script>
+  function langue(l){
+    document.documentElement.lang = l;
+    document.getElementById('fr').hidden = l !== 'fr';
+    document.getElementById('en').hidden = l !== 'en';
+    document.getElementById('pied-fr').hidden = l !== 'fr';
+    document.getElementById('pied-en').hidden = l !== 'en';
+    document.getElementById('btn-fr').setAttribute('aria-pressed', String(l === 'fr'));
+    document.getElementById('btn-en').setAttribute('aria-pressed', String(l === 'en'));
+    try { localStorage.setItem('alcora.langue', l); } catch (e) { /* navigation privee */ }
+  }
+  // La langue retenue d'abord, celle du navigateur sinon. Le francais reste la langue
+  // par defaut du document : c'est celle du projet.
+  try {
+    const memo = localStorage.getItem('alcora.langue');
+    if (memo) langue(memo);
+    else if (!(navigator.language || 'fr').toLowerCase().startsWith('fr')) langue('en');
+  } catch (e) { /* indisponible : le francais par defaut */ }
+</script>
+</body>
+</html>
